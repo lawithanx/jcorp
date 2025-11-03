@@ -3,64 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Portfolio{% endblock %}</title>
+    <title>{% block title %}JCORP{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="theme-toggle" title="Toggle Dark/Light Mode">
-        <i class="fas fa-sun" id="theme-icon"></i>
-    </button>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
+<body class="{% if request.resolver_match.url_name == 'portfolio' or request.resolver_match.url_name == 'project_detail' %}portfolio-page{% endif %}">
+    <!-- Navigation -->
+    <nav class="navbar {% if request.resolver_match.url_name == 'portfolio' or request.resolver_match.url_name == 'project_detail' %}portfolio-nav{% endif %}">
         <div class="nav-container">
-                    <div class="nav-logo">
-                        <a href="{% url 'portfolio:home' %}" class="jcorp-logo">
-                            <img src="{% static 'images/jcorp-logo.png' %}" alt="JCORP Logo" class="logo-image">
-                        </a>
-                        <a href="{% url 'portfolio:home' %}" class="jc-logo">
-                            <span class="letters">JC</span>
-                        </a>
-                    </div>
-            <div class="nav-menu" id="nav-menu">
-                <a href="{% url 'portfolio:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                    ABOUT
-                </a>
-                <a href="{% url 'portfolio:portfolio' %}" class="nav-link {% if request.resolver_match.url_name == 'portfolio' %}active{% endif %}">
-                    SERVICES
-                </a>
-                <a href="{% url 'portfolio:contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
-                    CONTACT
-                </a>
-            </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+            <a href="{% url 'main:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" data-page="home">Home</a>
+            <a href="{% url 'main:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' or request.resolver_match.url_name == 'agent_detail' %}active{% endif %}" data-page="about">About</a>
+            <a href="{% url 'main:portfolio' %}" class="nav-link {% if request.resolver_match.url_name == 'portfolio' %}active{% endif %}" data-page="portfolio">Portfolio</a>
+            <a href="{% url 'main:contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" data-page="contact">Contact</a>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="main-content">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-content">
-                <p>&copy; 2024 Portfolio. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
+            <p>&copy; 2025 JCORP. All rights reserved.</p>
         </div>
     </footer>
 
@@ -68,3 +35,4 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+

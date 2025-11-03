@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - JCORP{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video id="home-video" autoplay muted loop playsinline>
+        <source src="{{ MEDIA_URL }}home-background.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+    <div class="video-content">
+        <h1 class="hero-title">JCORP</h1>
+        <p class="hero-subtitle">Security Development and Design</p>
+        <a href="#" class="download-btn" id="download-business-card">Download Business Card</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('home-video');
+        video.play().catch(function(error) {
+            console.log('Video autoplay prevented:', error);
+        });
+    });
+</script>
+{% endblock %}
+

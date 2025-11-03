@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - JCORP{% endblock %}
+
+{% block content %}
+<div class="page-content dossier-page">
+    <div class="container">
+        {% if agent %}
+        <div class="dossier-document-container">
+            <div class="file-document">
+                <div class="document-header">
+                    <div class="document-meta">
+                        <span class="meta-label">CLASSIFICATION:</span>
+                        <span class="meta-value">AGENT</span>
+                    </div>
+                    <div class="document-meta">
+                        <span class="meta-label">DATE:</span>
+                        <span class="meta-value">{{ agent.created_date|date:"Y-m-d" }}</span>
+                    </div>
+                    <div class="document-meta">
+                        <span class="meta-label">FILE #:</span>
+                        <span class="meta-value">{{ agent.id }}</span>
+                    </div>
+                </div>
+                
+                <div class="document-body">
+                    <h1 class="document-title">{{ agent.name }}</h1>
+                    
+                    <div class="document-section">
+                        <span class="section-label">PROFILE PICTURE:</span>
+                        <div class="agent-profile-container">
+                            {% if agent.profile_picture %}
+                            <img src="{{ agent.profile_picture.url }}" alt="{{ agent.name }}" class="agent-profile-image">
+                            {% else %}
+                            <img src="{% static 'images/profile-placeholder.svg' %}" alt="{{ agent.name }}" class="agent-profile-image">
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="document-section">
+                        <span class="section-label">ABOUT ME:</span>
+                        <p class="section-content">{{ agent.description|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="dossier-empty">
+            <p class="empty-message">NO FILES FOUND</p>
+            <p class="empty-subtitle">Dossier is empty</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
