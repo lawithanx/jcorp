@@ -12,18 +12,184 @@
     <div class="video-content">
         <h1 class="hero-title">JCORP</h1>
         <p class="hero-subtitle">Security Development and Design</p>
-        <a href="#" class="download-btn" id="download-business-card">Download Business Card</a>
+        
+        <!-- 3D Business Card Container -->
+        <div id="business-card-3d-container" class="business-card-3d-container"></div>
+        
+        <!-- Payment and Download Buttons -->
+        <div class="payment-actions">
+            <button class="buy-business-card-btn" id="buy-business-card">
+                <span class="btn-icon">💰</span>
+                <span class="btn-text">Buy Business Card</span>
+                <span class="btn-amount" id="payment-amount">0.02 ETH</span>
+            </button>
+            
+            <button class="download-business-card-btn" id="download-business-card" style="display: none;">
+                <span>Download Business Card</span>
+                <svg class="download-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2V14M8 14L3 9M8 14L13 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Payment Status -->
+        <div id="payment-status" class="payment-status" style="display: none;"></div>
     </div>
 </div>
 {% endblock %}
 
+{% block extra_head %}
+<!-- Three.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Web3.js for blockchain integration -->
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+<!-- jsPDF for PDF download (optional) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+{% endblock %}
+
 {% block extra_js %}
+<script src="{% static 'js/business-card-3d.js' %}"></script>
+<script src="{% static 'js/web3-payment.js' %}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const video = document.getElementById('home-video');
-        video.play().catch(function(error) {
-            console.log('Video autoplay prevented:', error);
-        });
+        if (video) {
+            video.play().catch(function(error) {
+                console.log('Video autoplay prevented:', error);
+            });
+        }
+
+        // Payment and Download functionality
+        const buyBtn = document.getElementById('buy-business-card');
+        const downloadBtn = document.getElementById('download-business-card');
+        const paymentStatus = document.getElementById('payment-status');
+        const paymentAmount = document.getElementById('payment-amount');
+
+        // Fetch payment info on load
+        if (window.web3Payment) {
+            window.web3Payment.fetchPaymentInfo().then(data => {
+                if (data && paymentAmount) {
+                    paymentAmount.textContent = `${data.amount_eth} ETH`;
+                }
+            }).catch(err => {
+                console.error('Error fetching payment info:', err);
+            });
+        }
+
+        // Buy button handler
+        if (buyBtn) {
+            buyBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                if (!window.web3Payment) {
+                    showPaymentStatus('Web3 payment not initialized', 'error');
+                    return;
+                }
+
+                buyBtn.disabled = true;
+                buyBtn.textContent = 'Processing...';
+                showPaymentStatus('Connecting to wallet...', 'info');
+
+                try {
+                    // Connect wallet
+                    const connectResult = await window.web3Payment.connectWallet();
+                    if (!connectResult.success) {
+                        showPaymentStatus(connectResult.error || 'Failed to connect wallet', 'error');
+                        buyBtn.disabled = false;
+                        buyBtn.innerHTML = '<span class="btn-icon">💰</span><span class="btn-text">Buy Business Card</span><span class="btn-amount" id="payment-amount">0.02 ETH</span>';
+                        return;
+                    }
+
+                    showPaymentStatus('Sending payment...', 'info');
+
+                    // Send payment
+                    const paymentResult = await window.web3Payment.sendPayment();
+                    
+                    if (paymentResult.success) {
+                        showPaymentStatus('Payment confirmed! You can now download your business card.', 'success');
+                        buyBtn.style.display = 'none';
+                        downloadBtn.style.display = 'inline-flex';
+                        
+                        // Store download token
+                        if (paymentResult.download_token) {
+                            downloadBtn.dataset.token = paymentResult.download_token;
+                        }
+                    } else {
+                        if (paymentResult.status === 'processing') {
+                            showPaymentStatus(`Payment sent! Waiting for confirmations (${paymentResult.confirmations}/${paymentResult.required_confirmations})...`, 'info');
+                            // Poll for confirmation
+                            pollPaymentStatus(paymentResult.transaction_hash || paymentResult.tx_hash);
+                        } else {
+                            showPaymentStatus(paymentResult.error || 'Payment failed', 'error');
+                            buyBtn.disabled = false;
+                            buyBtn.innerHTML = '<span class="btn-icon">💰</span><span class="btn-text">Buy Business Card</span><span class="btn-amount" id="payment-amount">0.02 ETH</span>';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    showPaymentStatus(error.message || 'Payment failed', 'error');
+                    buyBtn.disabled = false;
+                    buyBtn.innerHTML = '<span class="btn-icon">💰</span><span class="btn-text">Buy Business Card</span><span class="btn-amount" id="payment-amount">0.02 ETH</span>';
+                }
+            });
+        }
+
+        // Download button handler
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (window.businessCard3D) {
+                    window.businessCard3D.downloadImage();
+                } else {
+                    showPaymentStatus('3D card not initialized', 'error');
+                }
+            });
+        }
+
+        // Poll payment status
+        function pollPaymentStatus(txHash) {
+            const interval = setInterval(async () => {
+                if (!window.web3Payment) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                const result = await window.web3Payment.checkPaymentStatus(txHash);
+                
+                if (result.success) {
+                    clearInterval(interval);
+                    showPaymentStatus('Payment confirmed! You can now download your business card.', 'success');
+                    buyBtn.style.display = 'none';
+                    downloadBtn.style.display = 'inline-flex';
+                    if (result.download_token) {
+                        downloadBtn.dataset.token = result.download_token;
+                    }
+                } else if (result.status === 'processing') {
+                    showPaymentStatus(`Waiting for confirmations (${result.confirmations}/${result.required_confirmations})...`, 'info');
+                } else {
+                    clearInterval(interval);
+                    showPaymentStatus(result.error || 'Payment verification failed', 'error');
+                }
+            }, 5000); // Poll every 5 seconds
+
+            // Stop polling after 5 minutes
+            setTimeout(() => clearInterval(interval), 300000);
+        }
+
+        // Show payment status
+        function showPaymentStatus(message, type) {
+            if (!paymentStatus) return;
+            
+            paymentStatus.textContent = message;
+            paymentStatus.className = `payment-status payment-status-${type}`;
+            paymentStatus.style.display = 'block';
+            
+            if (type === 'success' || type === 'error') {
+                setTimeout(() => {
+                    paymentStatus.style.display = 'none';
+                }, 10000);
+            }
+        }
     });
 </script>
 {% endblock %}

@@ -1,0 +1,449 @@
+/* Page Styles */
+.page-content {
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  padding: 2rem 0;
+  overflow-y: auto;
+}
+
+/* Home Page Video Background */
+.home-page {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 130px);
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.home-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Night vision filter effect */
+  filter: brightness(0.6) contrast(1.8) hue-rotate(90deg) saturate(2);
+  z-index: -1;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #ffffff;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #ffffff;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+/* Agents Grid */
+.agents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.agent-card {
+  background-color: rgba(26, 26, 26, 0.9);
+  border: 2px solid #ffffff;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.agent-card:hover {
+  border-color: #c0c0c0;
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
+  background-color: rgba(40, 40, 40, 0.95);
+}
+
+.agent-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ffffff;
+}
+
+.meta-label {
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.meta-value {
+  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: bold;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.agent-profile {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid #ffffff;
+}
+
+.profile-placeholder {
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.agent-body {
+  flex: 1;
+}
+
+.agent-name {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.agent-description {
+  color: #ffffff;
+  line-height: 1.6;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+/* Portfolio Content */
+.portfolio-content,
+.contact-content {
+  text-align: center;
+  padding: 3rem 0;
+  color: #ffffff;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+/* Payment Styles */
+.payment-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.payment-method-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.payment-method-btn {
+  padding: 1rem 2rem;
+  background-color: rgba(26, 26, 26, 0.9);
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.payment-method-btn:hover {
+  border-color: #c0c0c0;
+  background-color: rgba(40, 40, 40, 0.95);
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
+}
+
+.payment-method-btn.active {
+  border-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.payment-section {
+  margin-top: 2rem;
+}
+
+.payment-info-card {
+  background-color: rgba(26, 26, 26, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.payment-info-card h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.payment-description {
+  color: #ffffff;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.payment-details {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #ffffff;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.detail-value {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.detail-value.address {
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+}
+
+.wallet-connected {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.wallet-connected p {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  backdrop-filter: blur(5px);
+  outline: none;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: #c0c0c0;
+  background-color: rgba(40, 40, 40, 0.95);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-connect {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.btn-pay {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.btn-download {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.payment-success {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.success-message {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  text-align: center;
+}
+
+.payment-status {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border: 2px solid;
+  text-align: center;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.status-info {
+  border-color: #c0c0c0;
+  color: #c0c0c0;
+  background-color: rgba(192, 192, 192, 0.1);
+}
+
+.status-success {
+  border-color: #ffffff;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.status-error {
+  border-color: #ffffff;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Fiat Payment Form */
+.fiat-payment-form {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #c0c0c0;
+  box-shadow: 0 0 8px rgba(192, 192, 192, 0.2);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.amount-select {
+  width: auto;
+  min-width: 150px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 0 1rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+    letter-spacing: 4px;
+  }
+
+  .agents-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+

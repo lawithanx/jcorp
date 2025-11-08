@@ -11,21 +11,62 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from decouple import Config, RepositoryEnv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .secret/.env
+SECRET_ENV_FILE = BASE_DIR / '.secret' / '.env'
+if SECRET_ENV_FILE.exists():
+    config = Config(RepositoryEnv(str(SECRET_ENV_FILE)))
+else:
+    # Fallback to os.getenv if .secret/.env doesn't exist
+    config = None
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)jjir%n7dbtija70%o0cc9q8ocjvl-s(pjafj50$danridnq-('
+DEFAULT_SECRET_KEY = 'django-insecure-)jjir%n7dbtija70%o0cc9q8ocjvl-s(pjafj50$danridnq-('
+if config:
+    SECRET_KEY = config('SECRET_KEY', default=DEFAULT_SECRET_KEY)
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+
+# Server Configuration
+# Port and host can be overridden via environment variables:
+#   export DJANGO_PORT=9444
+#   export DJANGO_HOST=0.0.0.0
+# Access in code: from django.conf import settings; settings.SERVER_PORT
+def get_env(key, default=None, cast=None):
+    """Get environment variable from .secret/.env or system environment"""
+    if config:
+        if cast is not None:
+            return config(key, default=default, cast=cast)
+        else:
+            return config(key, default=default)
+    value = os.getenv(key, default)
+    if cast and value:
+        return cast(value)
+    return value
+
+SERVER_PORT = int(get_env('DJANGO_PORT', 9444))
+SERVER_HOST = get_env('DJANGO_HOST', '0.0.0.0')
+
+# Web3 Payment Configuration
+WALLET_ADDRESS = get_env('WALLET_ADDRESS', '0x0000000000000000000000000000000000000000')
+RPC_URL = get_env('RPC_URL', 'https://mainnet.infura.io/v3/YOUR_PROJECT_ID')
+CHAIN_ID = int(get_env('CHAIN_ID', 1))  # 1 for Ethereum mainnet, 5 for Goerli testnet
+PAYMENT_AMOUNT_ETH = float(get_env('PAYMENT_AMOUNT_ETH', 0.02))  # Default 0.02 ETH
+PAYMENT_EXPIRY_HOURS = int(get_env('PAYMENT_EXPIRY_HOURS', 24))  # Download link valid for 24 hours
 
 
 # Application definition
@@ -117,7 +158,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    BASE_DIR / 'frontend' / 'build' / 'static',  # React build static files
+]
 
 # Media files
 MEDIA_URL = 'media/'

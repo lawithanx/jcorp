@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 
 class Project(models.Model):
@@ -68,3 +69,47 @@ class Partner(models.Model):
     
     def get_absolute_url(self):
         return reverse('main:agent_detail', kwargs={'pk': self.pk})
+
+
+class Payment(models.Model):
+    """Payment model for tracking crypto transactions"""
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('confirmed', 'Confirmed'),
+        ('failed', 'Failed'),
+        ('expired', 'Expired'),
+    ]
+    
+    transaction_hash = models.CharField(max_length=66, unique=True, db_index=True)
+    from_address = models.CharField(max_length=42)
+    to_address = models.CharField(max_length=42)
+    amount_wei = models.DecimalField(max_digits=30, decimal_places=0, help_text='Amount in Wei')
+    amount_eth = models.DecimalField(max_digits=18, decimal_places=8, help_text='Amount in ETH')
+    network = models.CharField(max_length=20, default='ethereum', help_text='Blockchain network')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    confirmations = models.IntegerField(default=0)
+    required_confirmations = models.IntegerField(default=3)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    download_token = models.CharField(max_length=64, unique=True, null=True, blank=True)
+    download_expires_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Payment'
+        verbose_name_plural = 'Payments'
+    
+    def __str__(self):
+        return f"Payment {self.transaction_hash[:10]}... - {self.status}"
+    
+    def is_verified(self):
+        return self.status == 'confirmed' and self.confirmations >= self.required_confirmations
+    
+    def is_download_valid(self):
+        if not self.is_verified():
+            return False
+        if self.download_expires_at and self.download_expires_at < timezone.now():
+            return False
+        return True

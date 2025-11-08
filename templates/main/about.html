@@ -6,44 +6,74 @@
 {% block content %}
 <div class="page-content dossier-page">
     <div class="container">
-        {% if agent %}
-        <div class="dossier-document-container">
-            <div class="file-document">
-                <div class="document-header">
-                    <div class="document-meta">
-                        <span class="meta-label">CLASSIFICATION:</span>
-                        <span class="meta-value">AGENT</span>
-                    </div>
-                    <div class="document-meta">
-                        <span class="meta-label">DATE:</span>
-                        <span class="meta-value">{{ agent.created_date|date:"Y-m-d" }}</span>
-                    </div>
-                    <div class="document-meta">
-                        <span class="meta-label">FILE #:</span>
-                        <span class="meta-value">{{ agent.id }}</span>
-                    </div>
-                </div>
-                
-                <div class="document-body">
-                    <h1 class="document-title">{{ agent.name }}</h1>
-                    
-                    <div class="document-section">
-                        <span class="section-label">PROFILE PICTURE:</span>
-                        <div class="agent-profile-container">
-                            {% if agent.profile_picture %}
-                            <img src="{{ agent.profile_picture.url }}" alt="{{ agent.name }}" class="agent-profile-image">
-                            {% else %}
-                            <img src="{% static 'images/profile-placeholder.svg' %}" alt="{{ agent.name }}" class="agent-profile-image">
-                            {% endif %}
+        {% if agents %}
+        <div class="about-dossier-container">
+            <div class="about-dossier-header">
+                <h1 class="about-dossier-title">AGENT DOSSIERS</h1>
+                <p class="about-dossier-subtitle">CLASSIFIED PERSONNEL FILES</p>
+            </div>
+            
+            <div class="agents-grid">
+                {% for agent in agents %}
+                <div class="agent-dossier-card">
+                    <div class="agent-dossier-header">
+                        <div class="agent-dossier-meta">
+                            <span class="meta-label">FILE #:</span>
+                            <span class="meta-value">{{ agent.id|stringformat:"04d" }}</span>
+                        </div>
+                        <div class="agent-dossier-meta">
+                            <span class="meta-label">STATUS:</span>
+                            <span class="meta-value">ACTIVE</span>
                         </div>
                     </div>
                     
-                    <div class="document-section">
-                        <span class="section-label">ABOUT ME:</span>
-                        <p class="section-content">{{ agent.description|linebreaks }}</p>
+                    <div class="agent-profile-picture-container">
+                        {% if agent.profile_picture %}
+                        <img src="{{ agent.profile_picture.url }}" alt="{{ agent.name }}" class="agent-profile-picture">
+                        {% else %}
+                        <img src="{% static 'images/profile-placeholder.svg' %}" alt="{{ agent.name }}" class="agent-profile-picture">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="agent-dossier-body">
+                        <h2 class="agent-name">{{ agent.name }}</h2>
+                        <div class="agent-description">
+                            <span class="section-label">BIO:</span>
+                            <p class="section-content">{{ agent.description|linebreaks }}</p>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
+            
+            {% if agents_count < 3 %}
+                {% for i in "123"|make_list %}
+                    {% if forloop.counter > agents_count %}
+                    <div class="agent-dossier-card agent-dossier-placeholder">
+                        <div class="agent-dossier-header">
+                            <div class="agent-dossier-meta">
+                                <span class="meta-label">FILE #:</span>
+                                <span class="meta-value">----</span>
+                            </div>
+                            <div class="agent-dossier-meta">
+                                <span class="meta-label">STATUS:</span>
+                                <span class="meta-value">PENDING</span>
+                            </div>
+                        </div>
+                        <div class="agent-profile-picture-container">
+                            <img src="{% static 'images/profile-placeholder.svg' %}" alt="Placeholder" class="agent-profile-picture">
+                        </div>
+                        <div class="agent-dossier-body">
+                            <h2 class="agent-name">CLASSIFIED</h2>
+                            <div class="agent-description">
+                                <span class="section-label">BIO:</span>
+                                <p class="section-content">Information pending classification...</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
         {% else %}
         <div class="dossier-empty">
@@ -54,4 +84,3 @@
     </div>
 </div>
 {% endblock %}
-

@@ -1,5 +1,7 @@
 # JCORP Portfolio
 
+> **Quick Setup Reference**: See [SETUP.md](SETUP.md) for detailed port configuration, startup scripts, and development workflow.
+
 A military-style, dossier-themed portfolio website showcasing security development and design projects. Built with a focus on cybersecurity, blockchain, and secure system architecture.
 
 ## Description
@@ -128,10 +130,38 @@ JCORP/
    ```bash
    python manage.py runserver
    ```
+   The server will automatically start on port 9444 (configured in settings).
+   
+   Or use the startup script:
+   ```bash
+   ./start.sh
+   ```
+   
+   To use a different port, specify it explicitly:
+   ```bash
+   python manage.py runserver 0.0.0.0:8080
+   ```
 
-7. **Access the application**
-   - Website: http://localhost:8000
-   - Admin: http://localhost:8000/admin
+       7. **Access the application**
+          - Django Backend: http://localhost:9444
+          - React Frontend: http://localhost:3000
+          - Admin: http://localhost:9444/admin
+
+       8. **Start React Frontend** (in separate terminal)
+          ```bash
+          cd /home/jevon/DEV/JCORP/JCORP
+          ./start-frontend.sh
+          # OR
+          cd frontend && npm run dev
+          ```
+
+## Port Configuration
+
+- **Django Backend**: Port `9444` (configured in `mysite/settings.py`)
+- **React Frontend**: Port `3000` (configured in `frontend/package.json`)
+- **Virtual Environment**: `~/.virtualenvs/jcorp`
+
+For detailed setup information, see [SETUP.md](SETUP.md).
 
 ## Design Philosophy
 

@@ -21,13 +21,17 @@ class PortfolioView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        projects = context['projects']
+        projects = context.get('projects', self.get_queryset())
         
         # Get selected project ID from URL parameter
         selected_id = self.request.GET.get('project', None)
         
         if selected_id:
-            selected_project = projects.filter(pk=selected_id).first()
+            try:
+                selected_id = int(selected_id)
+                selected_project = projects.filter(pk=selected_id).first()
+            except (ValueError, TypeError):
+                selected_project = None
         else:
             # Default to first project if none selected
             selected_project = projects.first() if projects else None
@@ -45,19 +49,20 @@ class ProjectDetailView(DetailView):
 
 
 class AboutView(ListView):
-    """About page - single agent dossier view"""
+    """About page - agent dossier view with 3 profiles"""
     model = Partner
     template_name = 'main/about.html'
     context_object_name = 'agents'
     
     def get_queryset(self):
-        return Partner.objects.filter(is_active=True)
+        return Partner.objects.filter(is_active=True).order_by('order', 'name')[:3]
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get the first active agent
-        agent = Partner.objects.filter(is_active=True).first()
-        context['agent'] = agent
+        # Get up to 3 active agents
+        agents = Partner.objects.filter(is_active=True).order_by('order', 'name')[:3]
+        context['agents'] = list(agents)
+        context['agents_count'] = agents.count()
         return context
 
 
@@ -71,3 +76,8 @@ class AgentDetailView(DetailView):
 class ContactView(TemplateView):
     """Contact page"""
     template_name = 'main/contact.html'
+
+
+class PaymentView(TemplateView):
+    """Payment page"""
+    template_name = 'main/payment.html'
