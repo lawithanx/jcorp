@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # JCORP Complete Startup Script
-# Starts both Django Backend (Port 9444) and React Frontend (Port 3001)
+# Builds React and serves it on both ports:
+# - Port 9441: React dev server (development)
+# - Port 9444: Django serves React build (production)
 
 # Colors for output
 RED='\033[0;31m'
@@ -17,7 +19,7 @@ FRONTEND_DIR="${PROJECT_DIR}/frontend"
 # Port configuration
 DJANGO_PORT=9444
 DJANGO_HOST=0.0.0.0
-FRONTEND_PORT=3001
+FRONTEND_PORT=9441
 
 # PID files for cleanup
 BACKEND_PID_FILE="${PROJECT_DIR}/.backend.pid"
@@ -76,36 +78,52 @@ export REACT_APP_API_URL="http://localhost:${DJANGO_PORT}"
 echo -e "${GREEN}=========================================="
 echo -e "JCORP Project Startup"
 echo -e "==========================================${NC}"
-echo -e "${BLUE}Backend:${NC}  Django on port ${GREEN}${DJANGO_PORT}${NC}"
-echo -e "${BLUE}Frontend:${NC} React on port ${GREEN}${FRONTEND_PORT}${NC}"
-echo -e "${BLUE}Backend URL:${NC}  http://${DJANGO_HOST}:${DJANGO_PORT}"
-echo -e "${BLUE}Frontend URL:${NC} http://localhost:${FRONTEND_PORT}"
-echo -e "${GREEN}==========================================${NC}\n"
 
-# Start Django Backend
+# Build React app first (for Django to serve)
+echo -e "${BLUE}Building React app for Django...${NC}"
+cd "$FRONTEND_DIR"
+if npm run build; then
+    echo -e "${GREEN}✓ React app built successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to build React app${NC}"
+    exit 1
+fi
+
+# Copy React index.html to Django templates if it doesn't exist or is outdated
+if [ -f "$FRONTEND_DIR/build/index.html" ]; then
+    mkdir -p "$PROJECT_DIR/templates"
+    cp "$FRONTEND_DIR/build/index.html" "$PROJECT_DIR/templates/index.html"
+    echo -e "${GREEN}✓ React index.html copied to Django templates${NC}"
+fi
+
+# Start Django Backend (serves React build)
 echo -e "${BLUE}Starting Django backend server...${NC}"
 cd "$PROJECT_DIR"
 python manage.py runserver ${DJANGO_HOST}:${DJANGO_PORT} > /tmp/jcorp_backend.log 2>&1 &
 BACKEND_PID=$!
 echo $BACKEND_PID > "$BACKEND_PID_FILE"
-echo -e "${GREEN}✓ Django backend started (PID: $BACKEND_PID)${NC}"
+echo -e "${GREEN}✓ Django backend started (PID: $BACKEND_PID) on port ${DJANGO_PORT}${NC}"
 
 # Wait a moment for backend to initialize
 sleep 2
 
-# Start React Frontend
-echo -e "${BLUE}Starting React frontend server...${NC}"
+# Start React Frontend Dev Server
+echo -e "${BLUE}Starting React frontend dev server...${NC}"
 cd "$FRONTEND_DIR"
-PORT=${FRONTEND_PORT} npm run dev > /tmp/jcorp_frontend.log 2>&1 &
+PORT=${FRONTEND_PORT} REACT_APP_API_URL="http://localhost:${DJANGO_PORT}" npm run dev > /tmp/jcorp_frontend.log 2>&1 &
 FRONTEND_PID=$!
 echo $FRONTEND_PID > "$FRONTEND_PID_FILE"
-echo -e "${GREEN}✓ React frontend started (PID: $FRONTEND_PID)${NC}"
+echo -e "${GREEN}✓ React frontend started (PID: $FRONTEND_PID) on port ${FRONTEND_PORT}${NC}"
 
 echo -e "\n${GREEN}=========================================="
 echo -e "Both servers are running!"
 echo -e "==========================================${NC}"
-echo -e "${BLUE}Backend logs:${NC}  tail -f /tmp/jcorp_backend.log"
-echo -e "${BLUE}Frontend logs:${NC} tail -f /tmp/jcorp_frontend.log"
+echo -e "${BLUE}React Dev Server:${NC}  http://localhost:${FRONTEND_PORT} (development with hot reload)"
+echo -e "${BLUE}Django + React:${NC}     http://${DJANGO_HOST}:${DJANGO_PORT} (production build)"
+echo -e "${BLUE}API Endpoints:${NC}     http://${DJANGO_HOST}:${DJANGO_PORT}/api"
+echo -e "${BLUE}Admin Panel:${NC}       http://${DJANGO_HOST}:${DJANGO_PORT}/admin"
+echo -e "${BLUE}Backend logs:${NC}      tail -f /tmp/jcorp_backend.log"
+echo -e "${BLUE}Frontend logs:${NC}     tail -f /tmp/jcorp_frontend.log"
 echo -e "\n${YELLOW}Press Ctrl+C to stop both servers${NC}\n"
 
 # Keep script running and wait for background processes

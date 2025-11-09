@@ -1,23 +1,76 @@
+/* Font Face Declarations */
+/* NOTE: Font files are not yet installed. Using fallback fonts until fonts are added to public/fonts/ */
+/* To add fonts: Download from https://myfontlib.com/font/milico-sans-font and https://font.download/font/nimbus-mono */
+/* Then uncomment the @font-face rules below */
+
+/* Milico Sans - Header Font (Bold, Military-Inspired Sans-Serif) */
+/* @font-face {
+  font-family: 'Milico Sans';
+  src: url('/fonts/MilicoSans-Regular.woff2') format('woff2'),
+       url('/fonts/MilicoSans-Regular.woff') format('woff'),
+       url('/fonts/MilicoSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Milico Sans';
+  src: url('/fonts/MilicoSans-Bold.woff2') format('woff2'),
+       url('/fonts/MilicoSans-Bold.woff') format('woff'),
+       url('/fonts/MilicoSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+} */
+
+/* Nimbus Mono L - Body Font (Monospaced, Similar to Courier) */
+/* @font-face {
+  font-family: 'Nimbus Mono L';
+  src: url('/fonts/NimbusMonoL-Regular.woff2') format('woff2'),
+       url('/fonts/NimbusMonoL-Regular.woff') format('woff'),
+       url('/fonts/NimbusMonoL-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nimbus Mono L';
+  src: url('/fonts/NimbusMonoL-Bold.woff2') format('woff2'),
+       url('/fonts/NimbusMonoL-Bold.woff') format('woff'),
+       url('/fonts/NimbusMonoL-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+} */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
+  /* Touch-friendly: prevent text selection on tap */
+  -webkit-tap-highlight-color: rgba(0, 255, 136, 0.2);
+  -webkit-touch-callout: none;
 }
 
 body {
   margin: 0;
-  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #000000;
   color: #ffffff;
   overflow-x: hidden;
   overflow-y: auto;
+  /* Touch-friendly: allow smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 code {
-  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
 }
 
 #root {

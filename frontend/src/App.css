@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
 }
 
 .app-container {
@@ -17,11 +17,7 @@
 .canvas-wrapper {
   flex: 1;
   position: relative;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.05) 0%,
-    transparent 70%
-  );
+  background: #000000;
 }
 
 .controls {
@@ -40,11 +36,11 @@
 
 .title {
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   color: #ffffff;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  font-family: 'Milico Sans', Arial, sans-serif !important;
 }
 
 .subtitle {
@@ -64,7 +60,7 @@
   border: 2px solid;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
   position: relative;
   background-color: rgba(26, 26, 26, 0.9);
   min-width: 300px;
@@ -80,7 +76,6 @@
 .btn-connect:hover {
   background: #c0c0c0;
   color: #000000;
-  box-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
 }
 
 .btn-buy {
@@ -103,8 +98,6 @@
   background-color: rgba(40, 40, 40, 0.95);
   border-color: #c0c0c0;
   color: #ffffff;
-  box-shadow: 0 0 12px rgba(192, 192, 192, 0.2);
-  transform: none;
 }
 
 .btn-buy:hover:not(:disabled)::before {
@@ -137,7 +130,6 @@
   background-color: rgba(40, 40, 40, 0.95);
   border-color: #c0c0c0;
   color: #ffffff;
-  box-shadow: 0 0 12px rgba(192, 192, 192, 0.2);
 }
 
 .status {
@@ -179,7 +171,6 @@
   border-color: #c0c0c0;
   color: #ffffff;
   background-color: rgba(192, 192, 192, 0.1);
-  box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
 }
 
 .status-error {

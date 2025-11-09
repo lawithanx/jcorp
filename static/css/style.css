@@ -12,22 +12,22 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 html {
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 html, body {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 body {
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     background-color: var(--color-black);
     color: var(--color-white);
     line-height: 1.6;
@@ -36,21 +36,21 @@ body {
     flex-direction: column;
 }
 
-/* Ensure all text elements use Cousine (open source Courier New alternative) */
+/* Ensure all text elements use Courier New (monospaced military style font) */
 h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select, label, li, td, th, 
 em, strong, b, i, u, small, sub, sup, code, pre, blockquote, cite, abbr, acronym,
 ::before, ::after, ::placeholder, ::selection {
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 /* Apply to all pseudo-elements and form elements */
 input::placeholder, textarea::placeholder {
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 /* Apply to SVG text elements */
 svg text, svg tspan {
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 /* Navigation */
@@ -115,7 +115,7 @@ svg text, svg tspan {
 }
 
 .nav-link.active {
-    color: var(--color-neon-green);
+    color: var(--color-white);
 }
 
 .nav-link.active::after {
@@ -125,8 +125,7 @@ svg text, svg tspan {
     left: 1rem;
     right: 1rem;
     height: 2px;
-    background-color: var(--color-neon-green);
-    box-shadow: 0 0 10px var(--color-neon-green);
+    background-color: var(--color-white);
 }
 
 /* Video Background with Night Vision Effect */
@@ -145,7 +144,11 @@ svg text, svg tspan {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.4) contrast(1.5) hue-rotate(90deg) saturate(2);
+    /* Neon Night Vision Effect */
+    filter: brightness(0.6) contrast(1.4) hue-rotate(100deg) saturate(2);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 136, 0.3),
+        inset 0 0 50px rgba(0, 255, 136, 0.1);
 }
 
 .video-overlay {
@@ -154,19 +157,6 @@ svg text, svg tspan {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 255, 0, 0.03) 2px,
-            rgba(0, 255, 0, 0.03) 4px
-        ),
-        radial-gradient(
-            circle at center,
-            transparent 0%,
-            rgba(0, 0, 0, 0.3) 100%
-        );
     pointer-events: none;
     z-index: 2;
 }
@@ -183,14 +173,10 @@ svg text, svg tspan {
 
 .hero-title {
     font-size: 4rem;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 8px;
+    letter-spacing: 6px;
     margin-bottom: 1rem;
-    text-shadow: 
-        0 0 10px var(--color-neon-green),
-        0 0 20px var(--color-neon-green),
-        0 0 30px var(--color-neon-green);
     color: var(--color-white);
 }
 
@@ -303,7 +289,7 @@ svg text, svg tspan {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
 }
 
@@ -355,7 +341,7 @@ svg text, svg tspan {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 .download-business-card-btn::before {
@@ -403,7 +389,7 @@ svg text, svg tspan {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -550,62 +536,9 @@ svg text, svg tspan {
     }
 }
 
-/* Night Vision Scanlines Animation */
-@keyframes scanlines {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 0 4px;
-    }
-}
+/* Night Vision Scanlines Animation - Removed */
 
-.video-overlay::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 1px,
-        rgba(0, 255, 0, 0.05) 1px,
-        rgba(0, 255, 0, 0.05) 2px
-    );
-    animation: scanlines 0.1s linear infinite;
-    pointer-events: none;
-}
-
-/* Additional Night Vision Effects */
-.video-background::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(
-            ellipse at center,
-            transparent 0%,
-            rgba(0, 255, 0, 0.05) 50%,
-            transparent 100%
-        );
-    pointer-events: none;
-    z-index: 2;
-    animation: pulse 3s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 0.3;
-    }
-    50% {
-        opacity: 0.6;
-    }
-}
+/* Additional Night Vision Effects - Removed */
 
 /* Dossier Portfolio Styles */
 .dossier-page {
@@ -740,7 +673,7 @@ svg text, svg tspan {
     letter-spacing: 1.5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     position: relative;
     display: flex;
     align-items: center;
@@ -798,7 +731,7 @@ svg text, svg tspan {
     background-color: rgba(192, 192, 192, 0.1);
     border: 1px solid var(--color-silver);
     border-radius: 2px;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     flex-shrink: 0;
 }
 
@@ -831,7 +764,7 @@ svg text, svg tspan {
     letter-spacing: 1.5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     position: relative;
     display: flex;
     align-items: center;
@@ -912,7 +845,7 @@ svg text, svg tspan {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 .dropdown-close {
@@ -928,7 +861,7 @@ svg text, svg tspan {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 .dropdown-close:hover {
@@ -1001,7 +934,7 @@ svg text, svg tspan {
     background-color: rgba(192, 192, 192, 0.1);
     border: 1px solid var(--color-silver);
     border-radius: 2px;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
     flex-shrink: 0;
 }
 
@@ -1074,7 +1007,7 @@ svg text, svg tspan {
 .file-date {
     font-size: 0.75rem;
     color: var(--color-white);
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 .file-body {
@@ -1612,7 +1545,7 @@ svg text, svg tspan {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    font-family: 'Cousine', 'Courier New', Courier, monospace !important;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 .doc-download-link::before,

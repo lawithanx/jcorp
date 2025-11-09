@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
 import './Page.css';
 
 function Payment() {
+  const videoRef = useRef(null);
   const [paymentMethod, setPaymentMethod] = useState('web3'); // 'web3' or 'fiat'
   const [walletAddress, setWalletAddress] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
@@ -11,10 +12,42 @@ function Payment() {
   const [downloadToken, setDownloadToken] = useState(null);
   const [fiatAmount, setFiatAmount] = useState(50); // Default $50 USD
 
-  const API_BASE_URL = "http://localhost:9444";
+  // Get API base URL from environment or use relative path
+  const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
   useEffect(() => {
     fetchPaymentInfo();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => console.log('Video is playing'))
+          .catch((error) => {
+            console.log('Video autoplay prevented:', error);
+            const handleInteraction = () => {
+              video.play().catch(console.error);
+              document.removeEventListener('click', handleInteraction);
+              document.removeEventListener('touchstart', handleInteraction);
+            };
+            document.addEventListener('click', handleInteraction);
+            document.addEventListener('touchstart', handleInteraction);
+          });
+      }
+    }
+    
+    return () => {
+      if (video) {
+        video.pause();
+      }
+    };
   }, []);
 
   async function fetchPaymentInfo() {
@@ -181,14 +214,33 @@ function Payment() {
   }
 
   return (
-    <div className="page-content">
-      <div className="page-container">
-        <div className="page-header">
-          <h1 className="page-title">PAYMENT</h1>
-          <p className="page-subtitle">SECURE PAYMENT GATEWAY</p>
+    <div className="home-page">
+      <div className="video-background">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="home-video"
+          preload="auto"
+        >
+          <source src="/videos/home-background.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="video-fallback">
+          <p>[VIDEO NOT FOUND]</p>
         </div>
+      </div>
+      
+      <div className="page-content-container">
+        <div className="business-card-template payment-page-template">
+          <div className="page-header" style={{marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.2)'}}>
+            <h1 className="page-title">PAYMENT</h1>
+            <p className="page-subtitle">SECURE PAYMENT GATEWAY</p>
+          </div>
 
-        <div className="payment-content">
+          <div className="payment-content">
           {/* Payment Method Selection */}
           <div className="payment-method-selector">
             <button
@@ -335,6 +387,7 @@ function Payment() {
               {paymentStatus.message}
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>
