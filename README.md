@@ -49,7 +49,7 @@ JCORP/
 │   └── management/           # Custom management commands
 │       └── commands/
 │           └── create_sample_projects.py
-├── mysite/                   # Django project settings
+├── config/                   # Django project settings
 │   ├── settings.py          # Configuration
 │   ├── urls.py              # Main URL routing
 │   └── wsgi.py              # WSGI configuration
@@ -130,7 +130,7 @@ JCORP/
    ```bash
    python manage.py runserver
    ```
-   The server will automatically start on port 9444 (configured in settings).
+   The server will automatically start on port 9441 (configured in settings).
    
    Or use the startup script:
    ```bash
@@ -143,22 +143,22 @@ JCORP/
    ```
 
        7. **Access the application**
-          - Django Backend: http://localhost:9444
-          - React Frontend: http://localhost:3000
-          - Admin: http://localhost:9444/admin
+          - Django Backend: http://localhost:9441
+          - React Frontend: http://localhost:9444
+          - Admin: http://localhost:9441/admin
 
        8. **Start React Frontend** (in separate terminal)
           ```bash
           cd /home/jevon/DEV/JCORP/JCORP
-          ./start-frontend.sh
+          ./start.sh
           # OR
-          cd frontend && npm run dev
+          cd frontend && PORT=9444 npm run dev
           ```
 
 ## Port Configuration
 
-- **Django Backend**: Port `9444` (configured in `mysite/settings.py`)
-- **React Frontend**: Port `3000` (configured in `frontend/package.json`)
+- **Django Backend**: Port `9441` (configured in `config/settings.py`)
+- **React Frontend**: Port `9444` (configured via PORT environment variable in `start.sh`)
 - **Virtual Environment**: `~/.virtualenvs/jcorp`
 
 For detailed setup information, see [SETUP.md](SETUP.md).

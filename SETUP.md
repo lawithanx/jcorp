@@ -6,7 +6,7 @@
 JCORP/
 ├── frontend/          # React application
 ├── main/              # Django main app
-├── mysite/            # Django project settings
+├── config/            # Django project settings
 ├── static/            # Django static files
 ├── templates/         # Django templates
 ├── media/             # Media files
@@ -17,23 +17,23 @@ JCORP/
 ## Port Configuration
 
 ### Django Backend
-- **Port**: `9444` (explicitly configured)
-- **URL**: `http://localhost:9444` or `http://0.0.0.0:9444`
-- **Configuration**: Set in `start.sh` script and `mysite/settings.py`
+- **Port**: `9441` (explicitly configured)
+- **URL**: `http://localhost:9441` or `http://0.0.0.0:9441`
+- **Configuration**: Set in `start.sh` script and `config/settings.py`
 - **Environment Variables**:
-  - `DJANGO_PORT=9444` (explicitly set in start.sh)
+  - `DJANGO_PORT=9441` (explicitly set in start.sh)
   - `DJANGO_HOST=0.0.0.0` (explicitly set in start.sh)
-- **Script**: `./start.sh` - Automatically sets port to 9444
+- **Script**: `./start.sh` - Automatically sets port to 9441
 
 ### React Frontend
-- **Port**: `3001` (changed from 3000 to avoid conflicts)
-- **URL**: `http://localhost:3001`
-- **Configuration**: Set via `PORT` environment variable in `start-frontend.sh`
+- **Port**: `9444` (configured to avoid conflicts with port 3000)
+- **URL**: `http://localhost:9444`
+- **Configuration**: Set via `PORT` environment variable in `start.sh`
 - **Environment Variables**:
-  - `PORT=3001` (explicitly set in start-frontend.sh)
-  - `REACT_APP_API_URL=http://localhost:9444` (points to Django backend)
-- **Script**: `./start-frontend.sh` - Automatically sets port to 3001
-- **API Base URL**: `http://localhost:9444` (configured in `frontend/src/pages/Payment.jsx`)
+  - `PORT=9444` (explicitly set in start.sh)
+  - `REACT_APP_API_URL=http://localhost:9441` (points to Django backend)
+- **Script**: `./start.sh` - Automatically sets port to 9444
+- **API Base URL**: `http://localhost:9441` (configured in `frontend/src/pages/Payment.jsx`)
 
 ## Virtual Environment
 
@@ -53,13 +53,13 @@ chmod +x start.sh
 ```
 
 This single script will:
-- **Start Django Backend** on port `9444` (http://0.0.0.0:9444)
-- **Start React Frontend** on port `3001` (http://localhost:3001)
+- **Start Django Backend** on port `9441` (http://0.0.0.0:9441)
+- **Start React Frontend** on port `9444` (http://localhost:9444)
 - **Automatically sets** all required environment variables:
-  - `DJANGO_PORT=9444`
+  - `DJANGO_PORT=9441`
   - `DJANGO_HOST=0.0.0.0`
-  - `PORT=3001`
-  - `REACT_APP_API_URL=http://localhost:9444`
+  - `PORT=9444`
+  - `REACT_APP_API_URL=http://localhost:9441`
 - **Activates virtual environment** if available at `~/.virtualenvs/jcorp`
 - **Runs both servers in background** with proper cleanup on exit
 - **Displays** clear port and URL information for both servers
@@ -78,7 +78,7 @@ If you need to run servers separately:
 ```bash
 cd /home/jevon/DEV/JCORP/JCORP
 source ~/.virtualenvs/jcorp/bin/activate
-export DJANGO_PORT=9444
+export DJANGO_PORT=9441
 export DJANGO_HOST=0.0.0.0
 python manage.py runserver ${DJANGO_HOST}:${DJANGO_PORT}
 ```
@@ -86,8 +86,8 @@ python manage.py runserver ${DJANGO_HOST}:${DJANGO_PORT}
 #### React Frontend Only
 ```bash
 cd /home/jevon/DEV/JCORP/JCORP/frontend
-export PORT=3001
-export REACT_APP_API_URL=http://localhost:9444
+export PORT=9444
+export REACT_APP_API_URL=http://localhost:9441
 PORT=${PORT} npm run dev
 ```
 
@@ -95,11 +95,11 @@ PORT=${PORT} npm run dev
 
 All environment variables are loaded from `.secret/.env` using `python-decouple`. The `.secret/` directory is automatically ignored by git.
 
-### Django Settings (mysite/settings.py)
+### Django Settings (config/settings.py)
 Environment variables are loaded from `.secret/.env`:
 ```python
 # Server Configuration
-SERVER_PORT = int(get_env('DJANGO_PORT', 9444))
+SERVER_PORT = int(get_env('DJANGO_PORT', 9441))
 SERVER_HOST = get_env('DJANGO_HOST', '0.0.0.0')
 
 # Web3 Payment Configuration
@@ -118,7 +118,7 @@ Create `.secret/.env` with your configuration:
 ```bash
 # Django Configuration
 SECRET_KEY=your-django-secret-key-here
-DJANGO_PORT=9444
+DJANGO_PORT=9441
 DJANGO_HOST=0.0.0.0
 
 # Web3 Payment Configuration
@@ -130,8 +130,8 @@ PAYMENT_EXPIRY_HOURS=24
 ```
 
 ### React Configuration
-- **API Base URL**: `http://localhost:9444` (hardcoded in `App.js`)
-- **Port**: `3001` (configured via `PORT` environment variable in `start-frontend.sh`)
+- **API Base URL**: `http://localhost:9441` (configured via `REACT_APP_API_URL` environment variable)
+- **Port**: `9444` (configured via `PORT` environment variable in `start.sh`)
 
 ## Dependencies
 
@@ -165,16 +165,16 @@ Key packages:
 
 ## API Endpoints
 
-### Django Backend (Port 9444)
-- **Home**: `http://localhost:9444/`
-- **API Payment Info**: `http://localhost:9444/api/payment/info/`
-- **API Payment Verify**: `http://localhost:9444/api/payment/verify/`
-- **API Download**: `http://localhost:9444/api/download/<token>/`
-- **Admin**: `http://localhost:9444/admin/`
+### Django Backend (Port 9441)
+- **Home**: `http://localhost:9441/`
+- **API Payment Info**: `http://localhost:9441/api/payment/info/`
+- **API Payment Verify**: `http://localhost:9441/api/payment/verify/`
+- **API Download**: `http://localhost:9441/api/download/<token>/`
+- **Admin**: `http://localhost:9441/admin/`
 
-### React Frontend (Port 3001)
-- **App**: `http://localhost:3001/`
-- **Connects to**: `http://localhost:9444` (Django API)
+### React Frontend (Port 9444)
+- **App**: `http://localhost:9444/`
+- **Connects to**: `http://localhost:9441` (Django API)
 
 ## Development Workflow
 
@@ -185,19 +185,19 @@ Key packages:
    ```
 
 2. **Access**:
-   - React App: `http://localhost:3001`
-   - Django API: `http://localhost:9444`
-   - Django Admin: `http://localhost:9444/admin`
+   - React App: `http://localhost:9444`
+   - Django API: `http://localhost:9441`
+   - Django Admin: `http://localhost:9441/admin`
 
 3. **Stop Servers**: Press `Ctrl+C` in the terminal running `start.sh`
 
 ## Important Notes
 
 - **Virtual Environment**: Always use `~/.virtualenvs/jcorp` for Django
-- **Ports**: Django on 9444, React on 3001
-- **React Dev Server**: Runs on port 3001 (configured via PORT environment variable in start.sh)
-- **Django Port**: Configured via environment variables, defaults to 9444
-- **API Communication**: React frontend connects to Django backend on port 9444
+- **Ports**: Django on 9441, React on 9444
+- **React Dev Server**: Runs on port 9444 (configured via PORT environment variable in start.sh)
+- **Django Port**: Configured via environment variables, defaults to 9441
+- **API Communication**: React frontend connects to Django backend on port 9441
 
 ## Script Locations
 
@@ -205,24 +205,24 @@ Key packages:
 
 ## Troubleshooting
 
-### Django not starting on 9444
-- Check if port is already in use: `lsof -i :9444`
+### Django not starting on 9441
+- Check if port is already in use: `lsof -i :9441`
 - Verify environment variables are set correctly
-- Check `mysite/settings.py` for port configuration
+- Check `config/settings.py` for port configuration
 
-### React not starting on 3001
-- Check if port is already in use: `lsof -i :3001`
-- Verify `PORT=3001` is set in `start.sh`
+### React not starting on 9444
+- Check if port is already in use: `lsof -i :9444`
+- Verify `PORT=9444` is set in `start.sh`
 - Verify `package.json` scripts are correct
 - Check logs: `tail -f /tmp/jcorp_frontend.log`
 
 ### React can't connect to Django API
-- Verify Django is running on port 9444
-- Check `API_BASE_URL` in `frontend/src/App.js`
+- Verify Django is running on port 9441
+- Check `REACT_APP_API_URL` environment variable is set to `http://localhost:9441`
 - Check CORS settings in Django if needed
 
 ## Last Updated
 - Date: 2025-11-08
-- Setup: Django on 9444, React on 3001
+- Setup: Django on 9441, React on 9444
 - Virtual Environment: ~/.virtualenvs/jcorp
 

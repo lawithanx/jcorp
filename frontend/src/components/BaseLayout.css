@@ -261,9 +261,10 @@
   flex: 1;
   margin-top: 130px;
   padding: 0;
-  min-height: calc(100vh - 180px);
-  max-height: calc(100vh - 180px);
-  overflow: visible;
+  height: calc(100vh - 230px);
+  min-height: calc(100vh - 230px);
+  max-height: calc(100vh - 230px);
+  overflow: hidden;
   display: block;
   position: relative;
   width: 100%;
@@ -273,9 +274,15 @@
 .footer {
   background-color: rgba(0, 0, 0, 0.95);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem 0;
-  margin-top: auto;
+  padding: 2.5rem 0;
+  margin-top: 0;
   flex-shrink: 0;
+  height: 100px;
+  min-height: 100px;
+  max-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer-container {

@@ -13,9 +13,9 @@
 .home-page {
   position: relative;
   width: 100%;
-  height: calc(100vh - 180px);
-  min-height: calc(100vh - 180px);
-  max-height: calc(100vh - 180px);
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
   overflow: hidden;
   background-color: #000000;
   display: block;
@@ -23,23 +23,6 @@
   padding: 0;
 }
 
-/* Additional edge fade overlay on home-page for seamless loop */
-.home-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    /* Top edge fade - hide loop transition */
-    linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 3%, transparent 8%),
-    /* Bottom edge fade */
-    linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 3%, transparent 8%);
-  pointer-events: none;
-  z-index: 4;
-  mix-blend-mode: multiply;
-}
 
 .video-background {
   position: absolute;
@@ -53,17 +36,17 @@
 }
 
 .home-video {
-  width: 110%;
-  height: 110%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  z-index: 0;
+  z-index: 1;
   position: absolute;
-  top: -5%;
-  left: -5%;
-  /* Strong Neon Green Night Vision Effect */
-  filter: brightness(0.5) contrast(1.8) hue-rotate(105deg) saturate(2.5);
-  opacity: 0.7;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  will-change: transform, opacity;
+  transition: opacity 3s ease-in-out;
 }
 
 /* Video fallback message */
@@ -94,77 +77,26 @@
   display: none;
 }
 
-/* Edge Fade Overlays for Seamless Loop - Hide video edges */
-.video-background::before {
-  content: '';
+
+
+.jaguar-3d-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    /* Top edge fade - stronger to hide loop */
-    linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.9) 5%, transparent 12%),
-    /* Bottom edge fade */
-    linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.9) 5%, transparent 12%),
-    /* Left edge fade */
-    linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, transparent 10%),
-    /* Right edge fade */
-    linear-gradient(to left, rgba(0, 0, 0, 0.8) 0%, transparent 10%),
-    /* Vignette center for harmony */
-    radial-gradient(
-      ellipse at center,
-      transparent 0%,
-      transparent 35%,
-      rgba(0, 0, 0, 0.4) 100%
-    );
-  pointer-events: none;
-  z-index: 2;
-  mix-blend-mode: multiply;
+  z-index: 1;
+  background-color: #000000;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
 }
 
-/* Strong Neon Green Night Vision Overlay */
-.video-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 255, 136, 0.04) 2px,
-      rgba(0, 255, 136, 0.04) 4px
-    ),
-    radial-gradient(
-      ellipse at center,
-      transparent 0%,
-      rgba(0, 255, 136, 0.08) 50%,
-      transparent 100%
-    ),
-    linear-gradient(
-      0deg,
-      rgba(0, 255, 136, 0.03) 0%,
-      transparent 50%,
-      rgba(0, 255, 136, 0.03) 100%
-    );
-  pointer-events: none;
-  z-index: 3;
-  mix-blend-mode: screen;
-  opacity: 0.7;
-  animation: neonPulse 4s ease-in-out infinite;
+.jaguar-3d-container.visible {
+  opacity: 1;
 }
 
-@keyframes neonPulse {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 0.9;
-  }
+.video-fade-out {
+  opacity: 0 !important;
 }
 
 /* Content overlay area - ensures content appears above video */
@@ -187,6 +119,205 @@
   justify-content: center;
   padding: 0 1rem;
   box-sizing: border-box;
+}
+
+/* Business Card Artifact Container - Angular Neon Green Frame */
+.artifact-container {
+  position: relative;
+  width: 90vw;
+  max-width: 900px;
+  padding: 2.5rem 3rem;
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 136, 0.03) 2px,
+      rgba(0, 255, 136, 0.03) 4px
+    );
+  border: 2px solid #00ff88;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 20px) 0,
+    100% 20px,
+    100% 100%,
+    20px 100%,
+    0 calc(100% - 20px)
+  );
+  box-shadow: 
+    0 0 30px rgba(0, 255, 136, 0.5),
+    0 0 60px rgba(0, 255, 136, 0.3),
+    inset 0 0 20px rgba(0, 255, 136, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  z-index: 25;
+}
+
+/* Corner arrows for scrollability indication */
+.artifact-container::before,
+.artifact-container::after {
+  content: '↑';
+  position: absolute;
+  color: #00ff88;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+  z-index: 26;
+}
+
+.artifact-container::before {
+  top: 10px;
+  left: 10px;
+}
+
+.artifact-container::after {
+  top: 10px;
+  right: 10px;
+}
+
+/* Business Card Artifact - Metallic Plaque */
+.business-card-artifact {
+  position: relative;
+  width: 280px;
+  height: 400px;
+  background: 
+    linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #2a2a2a 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(255, 255, 255, 0.02) 1px,
+      rgba(255, 255, 255, 0.02) 2px
+    );
+  border: 4px solid #3a3a3a;
+  border-radius: 2px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Artifact Header - WEB3 Text */
+.artifact-header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.artifact-label {
+  font-family: 'Milico Sans', Arial, sans-serif !important;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #c0c0c0;
+  text-transform: uppercase;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  display: block;
+}
+
+/* Artifact Body - Panther Head */
+.artifact-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.artifact-panther {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.panther-icon {
+  font-size: 8rem;
+  filter: grayscale(20%) contrast(1.2) brightness(0.9);
+  text-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+/* Artifact Content Section */
+.artifact-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  flex: 1;
+}
+
+.artifact-title {
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  line-height: 1.6;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Artifact Download Button */
+.artifact-download-btn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #ffffff;
+  background: 
+    linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 200, 100, 0.15) 100%);
+  border: 2px solid #00ff88;
+  border-radius: 2px;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 136, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0, 255, 136, 0.2);
+  user-select: none;
+}
+
+.artifact-download-btn:hover {
+  background: 
+    linear-gradient(135deg, rgba(0, 255, 136, 0.3) 0%, rgba(0, 200, 100, 0.25) 100%);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 136, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.artifact-download-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 0 15px rgba(0, 255, 136, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* Business Card Template - Artifact Styled */
@@ -439,6 +570,39 @@
     padding: 0 0.75rem;
   }
 
+  .artifact-container {
+    width: 95vw;
+    max-width: 95vw;
+    padding: 2rem 2rem;
+    gap: 2rem;
+    flex-direction: column;
+  }
+
+  .business-card-artifact {
+    width: 240px;
+    height: 340px;
+  }
+
+  .artifact-label {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+  }
+
+  .panther-icon {
+    font-size: 6rem;
+  }
+
+  .artifact-title {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  .artifact-content {
+    align-items: center;
+    text-align: center;
+  }
+
   .business-card-template {
     width: 95vw;
     max-width: 95vw;
@@ -457,6 +621,38 @@
 @media (max-width: 480px) {
   .page-content-container {
     padding: 0 0.5rem;
+  }
+
+  .artifact-container {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 1.5rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .business-card-artifact {
+    width: 200px;
+    height: 300px;
+  }
+
+  .artifact-label {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
+
+  .panther-icon {
+    font-size: 5rem;
+  }
+
+  .artifact-title {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .artifact-download-btn {
+    padding: 0.85rem 2rem;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
   }
 
   .business-card-template {
@@ -591,10 +787,92 @@
   font-weight: 700;
 }
 
+.agent-name-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.agent-details {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.agent-field {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.agent-field:last-child {
+  margin-bottom: 0;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Milico Sans', Arial, sans-serif !important;
+  font-weight: 600;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.field-value {
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
+  font-weight: 500;
+  flex: 1;
+}
+
+.field-value.code-name {
+  color: #00ff88;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.field-value.redacted {
+  color: transparent;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    inset 0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
+  width: 10ch;
+  height: 1.5em;
+  font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
+}
+
+.field-value.redacted::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 10ch;
+  height: 3px;
+  background-color: #000000;
+  transform: translateY(-50%);
+  z-index: 1;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+
 .agent-description {
   color: #ffffff;
   line-height: 1.6;
   font-family: 'Nimbus Mono L', 'Courier New', Courier, monospace !important;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* Portfolio Content */

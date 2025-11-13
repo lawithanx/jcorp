@@ -67,13 +67,41 @@ function About() {
               <div className="agent-header">
                 <span className="meta-label">FILE #:</span>
                 <span className="meta-value">001</span>
+                <span className="meta-label" style={{marginLeft: '2rem'}}>CLASSIFICATION:</span>
+                <span className="meta-value">TOP SECRET</span>
               </div>
               <div className="agent-profile">
                 <div className="profile-placeholder"></div>
               </div>
               <div className="agent-body">
-                <h2 className="agent-name">CLASSIFIED</h2>
-                <p className="agent-description">Information pending classification...</p>
+                <div className="agent-name-section">
+                  <div className="agent-field">
+                    <span className="field-label">CODE NAME:</span>
+                    <span className="field-value code-name">LAWTHINAX</span>
+                  </div>
+                  <div className="agent-field">
+                    <span className="field-label">REAL NAME:</span>
+                    <span className="field-value redacted"></span>
+                  </div>
+                </div>
+                <div className="agent-details">
+                  <div className="agent-field">
+                    <span className="field-label">SPECIALIZATION:</span>
+                    <span className="field-value">Security Development & Design</span>
+                  </div>
+                  <div className="agent-field">
+                    <span className="field-label">CLEARANCE LEVEL:</span>
+                    <span className="field-value">CLASSIFIED</span>
+                  </div>
+                  <div className="agent-field">
+                    <span className="field-label">STATUS:</span>
+                    <span className="field-value">ACTIVE</span>
+                  </div>
+                </div>
+                <p className="agent-description">
+                  Agent LAWTHINAX specializes in security development, system architecture, and classified design projects. 
+                  Operational details remain classified. All information regarding real identity has been redacted per security protocol.
+                </p>
               </div>
             </div>
           </div>

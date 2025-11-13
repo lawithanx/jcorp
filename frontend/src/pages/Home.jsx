@@ -1,20 +1,30 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "../App.css";
 import "./Page.css";
+import { Scene, Lighting, OrbitControls, Jaguar } from "../components/three";
 
 function Home() {
   const videoRef = useRef(null);
+  const [showJaguar, setShowJaguar] = useState(false);
+  const [videoFaded, setVideoFaded] = useState(false);
 
   useEffect(() => {
-    // Ensure video plays and loops when component mounts
     const video = videoRef.current;
     if (video) {
-      // Set video properties
       video.muted = true;
-      video.loop = true;
+      video.loop = false;
       video.playsInline = true;
-      
-      // Try to play the video
+
+      const handleVideoEnd = () => {
+        video.style.transition = 'opacity 3s ease-in-out';
+        video.style.opacity = '0';
+        setVideoFaded(true);
+        
+        setTimeout(() => {
+          setShowJaguar(true);
+        }, 3000);
+      };
+
       const playPromise = video.play();
       
       if (playPromise !== undefined) {
@@ -24,7 +34,6 @@ function Home() {
           })
           .catch((error) => {
             console.log('Video autoplay prevented:', error);
-            // Try again on user interaction
             const handleInteraction = () => {
               video.play().catch(console.error);
               document.removeEventListener('click', handleInteraction);
@@ -34,25 +43,25 @@ function Home() {
             document.addEventListener('touchstart', handleInteraction);
           });
       }
+
+      video.addEventListener('ended', handleVideoEnd);
       
-      // Handle video loading errors
       video.addEventListener('error', (e) => {
         console.error('Video loading error:', e);
-        console.log('Make sure the video file exists at: /videos/home-background.mp4');
+        console.log('Make sure the video file exists at: /videos/jvid_01.mp4');
       });
       
-      // Handle video loaded
       video.addEventListener('loadeddata', () => {
         console.log('Video loaded successfully');
       });
+      
+      return () => {
+        video.removeEventListener('ended', handleVideoEnd);
+        if (video) {
+          video.pause();
+        }
+      };
     }
-    
-    return () => {
-      // Cleanup if needed
-      if (video) {
-        video.pause();
-      }
-    };
   }, []);
 
   return (
@@ -62,22 +71,30 @@ function Home() {
           ref={videoRef}
           autoPlay
           muted
-          loop
           playsInline
-          className="home-video"
+          className={`home-video ${videoFaded ? 'video-fade-out' : ''}`}
           preload="auto"
         >
-          <source src="/videos/home-background.mp4" type="video/mp4" />
+          <source src="/videos/jvid_01.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        {/* Fallback if video doesn't load */}
         <div className="video-fallback">
           <p>[VIDEO NOT FOUND]</p>
           <p style={{fontSize: '0.7rem', marginTop: '0.5rem', opacity: 0.7}}>
-            Place home-background.mp4 in frontend/public/videos/
+            Place jvid_01.mp4 in frontend/public/videos/
           </p>
         </div>
       </div>
+      
+      {showJaguar && (
+        <div className={`jaguar-3d-container ${showJaguar ? 'visible' : ''}`}>
+          <Scene>
+            <Lighting />
+            <Jaguar position={[0, 0, 0]} />
+            <OrbitControls enableZoom={true} enablePan={false} autoRotate={true} autoRotateSpeed={0.5} />
+          </Scene>
+        </div>
+      )}
     </div>
   );
 }

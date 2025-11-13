@@ -2,8 +2,8 @@
 
 # JCORP Complete Startup Script
 # Builds React and serves it on both ports:
-# - Port 9441: React dev server (development)
-# - Port 9444: Django serves React build (production)
+# - Port 9444: React dev server (development)
+# - Port 9441: Django serves React build (production)
 
 # Colors for output
 RED='\033[0;31m'
@@ -17,9 +17,9 @@ PROJECT_DIR="/home/jevon/DEV/JCORP/JCORP"
 FRONTEND_DIR="${PROJECT_DIR}/frontend"
 
 # Port configuration
-DJANGO_PORT=9444
+DJANGO_PORT=9441
 DJANGO_HOST=0.0.0.0
-FRONTEND_PORT=9441
+FRONTEND_PORT=9444
 
 # PID files for cleanup
 BACKEND_PID_FILE="${PROJECT_DIR}/.backend.pid"
@@ -61,10 +61,14 @@ trap cleanup SIGINT SIGTERM EXIT
 # Change to project directory
 cd "$PROJECT_DIR" || exit 1
 
-# Activate virtual environment if it exists
+# Activate virtual environment
 if [ -f ~/.virtualenvs/jcorp/bin/activate ]; then
-    echo -e "${BLUE}Activating virtual environment...${NC}"
+    echo -e "${BLUE}Activating virtual environment (jcorp)...${NC}"
     source ~/.virtualenvs/jcorp/bin/activate
+    echo -e "${GREEN}✓ Virtual environment activated${NC}"
+else
+    echo -e "${YELLOW}⚠ Virtual environment not found at ~/.virtualenvs/jcorp/bin/activate${NC}"
+    echo -e "${YELLOW}  Continuing without virtual environment...${NC}"
 fi
 
 # Set Django environment variables

@@ -15,7 +15,7 @@ class Command(BaseRunserverCommand):
         if not addrport:
             # Use settings defaults
             host = getattr(settings, 'SERVER_HOST', '0.0.0.0')
-            port = getattr(settings, 'SERVER_PORT', 9444)
+            port = getattr(settings, 'SERVER_PORT', 9441)
             options['addrport'] = f"{host}:{port}"
         else:
             # If port only is provided (e.g., "9444"), add default host
